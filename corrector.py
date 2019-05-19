@@ -41,6 +41,8 @@ def put_editions(editions):
         print(editions)
 
 def check_distances(original, corrected, dictionary, editions):
+    corrected_words=corrected
+    num_editions=editions
     for tocheck_word in original:
         minimum_distance=sys.maxsize
         for checking in dictionary:
@@ -48,9 +50,10 @@ def check_distances(original, corrected, dictionary, editions):
             if dist<minimum_distance:
                 correct=checking
                 minimum_distance=dist
-        corrected=corrected+" "+correct
-        editions=editions+dist   
-    return corrected, editions
+        corrected_words=corrected_words+" "+correct
+        num_editions=num_editions+minimum_distance   
+    print(num_editions)
+    return corrected_words, num_editions
 
 def lev_distance(str1, str2):
     d=dict()
