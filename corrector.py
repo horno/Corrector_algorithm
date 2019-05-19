@@ -61,24 +61,22 @@ def lev_distance(word_1, word_2, min_dist, editions = 0):
     return min(case_1, case_2, case_3)
 
 
-
-
 def check_distances(original, corrected, dictionary, editions): 
     if not original:
         return corrected, editions
-    correct_word, distance = compare_with_dict(original[0], dictionary, "", sys.maxsize)#TODO Canviar per màxim
+    correct_word, distance = compare_with_dict(original[0], dictionary, "", sys.maxsize)
     return check_distances(original[1:], corrected + " " + correct_word, dictionary, editions + distance)
 
 def compare_with_dict(tocheck_word, dictionary, checked_word, minimum_distance):
     if not dictionary or minimum_distance == 0:
         return checked_word, minimum_distance
     
-    #print("Checking " + tocheck_word + " with " + dictionary[0])
     
     checking = dictionary[0]
+    if (len(checking) - len(tocheck_word)) > minimum_distance or len(checking) - len(tocheck_word) < -minimum_distance:
+        return compare_with_dict(tocheck_word, dictionary[1:], checked_word, minimum_distance)
+   
     dist = lev_distance(tocheck_word, checking, minimum_distance)
-    
-    #print("Distance: " + str(dist))
     
     if dist < minimum_distance:
         return compare_with_dict(tocheck_word, dictionary[1:], checking, dist)
@@ -90,8 +88,7 @@ def main():
     original = save_original_text() 
 
     corrected_text, editions = check_distances(original, "", dictionary, 0)
-    
-    put_correct_text(corrected_text)
+    put_correct_text(corrected_text[1:])
     put_editions(editions)
 
 if __name__=="__main__":
